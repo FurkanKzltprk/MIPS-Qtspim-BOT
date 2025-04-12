@@ -15,12 +15,44 @@ Bir sabit sayıyı doğrudan bir register’a yüklemek için kullanılır.
 
 ### `la` (Load Address)  
 Bir değişkenin (etiketin) adresini bir register’a yükler.  
-**Örnek:** `la $a0, mesaj` → `mesaj` isimli değişkenin bellekteki adresi `$a0` register’ına yüklenir. Genelde `print_string` syscall’ıyla kullanılır.
+**Örnek:** `la $a0, mesaj` → `mesaj` isimli değişkenin bellekteki adresi `$a0` register’ına yüklenir.
+
+---
+
+### `add` (Add)  
+İki register’daki sayıyı toplar, sonucu başka bir register’a koyar.  
+**Örnek:** `add $t2, $t0, $t1` → `$t2 = $t0 + $t1`
+
+---
+
+### `addi` (Add Immediate)  
+Bir register’a sabit sayı ekler.  
+**Örnek:** `addi $t0, $zero, 10` → `$t0 = 10` (çünkü `$zero = 0`)
+
+---
+
+### `sub` (Subtract)  
+İki register’daki sayıyı birbirinden çıkarır.  
+**Örnek:** `sub $t2, $t0, $t1` → `$t2 = $t0 - $t1`
+
+---
+
+### `mul` (Multiply)  
+İki sayıyı çarpar.  
+**Örnek:** `mul $t2, $t0, $t1` → `$t2 = $t0 * $t1`  
+(*Bazı QtSPIM sürümlerinde `mult` kullanılabilir.*)
+
+---
+
+### `div`, `mflo`, `mfhi` (Bölme ve sonuç alma)  
+- `div $t0, $t1` → `$t0 / $t1` işlemi  
+- `mflo $t2` → bölüm sonucu `$t2`'ye  
+- `mfhi $t3` → kalan sonucu `$t3`'e
 
 ---
 
 ### `lw` (Load Word)  
-Bellekten bir kelime (4 byte) alıp register’a yükler.  
+Bellekten bir kelime (4 byte) alır.  
 **Örnek:** `lw $t1, 0($t0)` → `$t0`'ın gösterdiği adresteki değeri `$t1`'e yükler.
 
 ---
@@ -31,24 +63,41 @@ Bir register’daki değeri belleğe yazar.
 
 ---
 
-### `add` (Add)  
-İki register’daki sayıyı toplar, sonucu bir başka register’a koyar.  
-**Örnek:** `add $t2, $t0, $t1` → `$t2 = $t0 + $t1`
+### `beq` (Branch if Equal)  
+İki register eşitse, belirtilen etikete gider.  
+**Örnek:** `beq $t0, $t1, etiket`
 
 ---
 
-### `addi` (Add Immediate)  
-Bir register’a bir sabit sayı ekler, sonucu başka bir register’a koyar.  
-**Örnek:** `addi $t0, $zero, 10` → `$t0 = 10` (çünkü `$zero = 0`)
+### `bne` (Branch if Not Equal)  
+İki register farklıysa, belirtilen etikete gider.  
+**Örnek:** `bne $t0, $t1, etiket`
+
+---
+
+### `j` (Jump)  
+Koşulsuz olarak belirtilen etikete atlar.  
+**Örnek:** `j bitir`
+
+---
+
+### `jal` (Jump and Link)  
+Bir fonksiyonu çağırır, dönüş adresini `$ra`'ye kaydeder.  
+**Örnek:** `jal fonksiyon`
+
+---
+
+### `jr` (Jump Register)  
+Register’daki adrese atlar.  
+**Örnek:** `jr $ra` → Fonksiyondan dönüş
 
 ---
 
 ### `syscall` (System Call)  
-MIPS’te işletim sistemi ile iletişime geçmek için kullanılır.  
-Hangi işlemin yapılacağı `$v0` register’ındaki koda göre belirlenir.
+İşletim sistemiyle iletişimi sağlar. `$v0` register’ı hangi işlemin yapılacağını belirler.
 
-**Bazı önemli `$v0` değerleri:**
+**Bazı `$v0` değerleri:**
 - `1`: tam sayı yazdır  
-- `4`: yazı yazdır  
-- `5`: klavyeden tam sayı oku  
+- `4`: string yazdır  
+- `5`: tam sayı oku  
 - `10`: programı sonlandır

@@ -1,7 +1,7 @@
 # MIPS-Qtspim-BOT
 Qtspim uygulamasında yaptığım MIPS , Assembly kod uygulamaları.
 Bilgisayar organizasyonu ve tasarımı dersi için yapılan uygulamalar.
-------------------KOMUTLAR-----------------------------------------
+------------------KOMUTLAR-----------------------------------------  
 li (Load Immediate):
 Bir sabit sayıyı doğrudan bir register’a yüklemek için kullanılır.
 Örnek: li $t0, 5 → $t0 register’ına 5 değeri yüklenir.
